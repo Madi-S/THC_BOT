@@ -18,7 +18,7 @@ def get_initial_keyboard():
         (
             InlineKeyboardButton(
                 'Хочу работать', callback_data=HIRING_CALLBACK),
-        ),
+        )
     )
 
     return InlineKeyboardMarkup(keyboard)
@@ -54,7 +54,7 @@ def get_kokshetau_keyboard():
         ),
         (
             InlineKeyboardButton('BACK_CALLBACK', callback_data=BACK_CALLBACK)
-        ),
+        )
     )
 
     return InlineKeyboardMarkup(keyboard)
@@ -90,7 +90,7 @@ def get_shuchinsk_keyboard():
         ),
         (
             InlineKeyboardButton('BACK_CALLBACK', callback_data=BACK_CALLBACK)
-        ),
+        )
     )
 
 
@@ -124,5 +124,5 @@ def get_borovoe_keyboard():
         ),
         (
             InlineKeyboardButton('BACK_CALLBACK', callback_data=BACK_CALLBACK)
-        ),
+        )
     )

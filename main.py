@@ -5,25 +5,19 @@ from callbacks import *
 from config import TELEGRAM_TOKEN
 
 
-# Define a few command handlers. These usually take the two arguments update and
-# context.
-# Best practice would be to replace context with an underscore,
-# since context is an unused local variable.
-# This being an example and not having context present confusing beginners,
-# we decided to have it present as context.
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Sends explanation on how to use the bot.'''
+    '''Sends explanation on how to use the bot'''
     await update.message.reply_text('Hi! Use /set <seconds> to set a timer')
 
 
 async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Send the alarm message.'''
+    '''Send the alarm message'''
     job = context.job
     await context.bot.send_message(job.chat_id, text=f'Beep! {job.data} seconds are over!')
 
 
 def remove_job_if_exists(name: str, context: ContextTypes.DEFAULT_TYPE) -> bool:
-    '''Remove job with given name. Returns whether job was removed.'''
+    '''Remove job with given name. Returns whether job was removed'''
     current_jobs = context.job_queue.get_jobs_by_name(name)
     if not current_jobs:
         return False
@@ -33,10 +27,9 @@ def remove_job_if_exists(name: str, context: ContextTypes.DEFAULT_TYPE) -> bool:
 
 
 async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Add a job to the queue.'''
+    '''Add a job to the queue'''
     chat_id = update.effective_message.chat_id
     try:
-        # args[0] should contain the time for the timer in seconds
         due = float(context.args[0])
         if due < 0:
             await update.effective_message.reply_text('Sorry we can not go back to future!')
@@ -48,7 +41,7 @@ async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         text = 'Timer successfully set!'
         if job_removed:
-            text += ' Old one was removed.'
+            text += ' Old one was removed'
         await update.effective_message.reply_text(text)
 
     except (IndexError, ValueError):
@@ -56,7 +49,7 @@ async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def unset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Remove the job if the user changed their mind.'''
+    '''Remove the job if the user changed their mind'''
     chat_id = update.message.chat_id
     job_removed = remove_job_if_exists(str(chat_id), context)
     text = 'Timer successfully cancelled!' if job_removed else 'You have no active timer.'
@@ -64,16 +57,13 @@ async def unset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 def main() -> None:
-    '''Run bot.'''
-    # Create the Application and pass it your bot's token.
+    '''Run bot'''
     application = Application.builder().token(TELEGRAM_TOKEN).build()
 
-    # on different commands - answer in Telegram
     application.add_handler(CommandHandler(['start', 'help'], start))
     application.add_handler(CommandHandler('set', set_timer))
     application.add_handler(CommandHandler('unset', unset))
 
-    # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
 
